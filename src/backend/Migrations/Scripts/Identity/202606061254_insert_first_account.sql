@@ -5,6 +5,7 @@ INSERT INTO
         first_name,
         last_name,
         username,
+        avatar_url,
         email,
         phone_number,
         is_active
@@ -16,6 +17,7 @@ VALUES
         '$adminFirstName$',
         '$adminLastName$',
         '$adminUsername$',
+        '$adminAvatarUrl$',
         '$adminEmail$',
         '$adminPhoneNumber$',
         TRUE
