@@ -1,0 +1,46 @@
+opencollection: 1.0.0
+
+info:
+  name: DealVote
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  auth:
+    type: oauth2
+    flow: authorization_code
+    authorizationUrl: http://localhost:8080/realms/deal_vote/protocol/openid-connect/auth
+    accessTokenUrl: http://localhost:8080/realms/deal_vote/protocol/openid-connect/token
+    callbackUrl: http://localhost:3000
+    credentials:
+      clientId: dealvote-client
+      clientSecret: "{{client_secret}}"
+      placement: body
+    pkce: {}
+    tokenConfig:
+      id: credentials
+      placement:
+        header: Bearer
+      source: access_token
+    settings:
+      autoFetchToken: true
+      autoRefreshToken: false
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git
+    presets:
+      request:
+        type: http
+        url: "{{host}}"

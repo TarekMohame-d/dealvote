@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/backend/">
+    <Project Path="src/backend/Shared/Shared.csproj" />
+  </Folder>
+  <Folder Name="/src/backend/Host/">
+    <Project Path="src/backend/Host/DealVote.Api/DealVote.Api.csproj" />
+  </Folder>
+  <Folder Name="/src/backend/Migrations/">
+    <Project Path="src/backend/Migrations/DealVote.Migrations.csproj" />
+  </Folder>
+  <Folder Name="/src/backend/Modules/" />
+  <Folder Name="/src/backend/Modules/Identity/">
+    <Project Path="src/backend/Modules/Identity/Modules.Identity.IntegrationEvents/Modules.Identity.IntegrationEvents.csproj" />
+    <Project Path="src/backend/Modules/Identity/Modules.Identity/Modules.Identity.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,30 @@
+# top-most EditorConfig file
+root = true
+
+# Default settings:
+[*]
+max_line_length = 110
+insert_final_newline = true
+indent_style = space
+trim_trailing_whitespace = true
+end_of_line = crlf
+
+[**/Migrations/**/*.cs]
+generated_code = true
+
+# Shell scripts
+[*.sh]
+end_of_line = lf
+[*.{cmd,bat}]
+end_of_line = crlf
+
+
+[*.{tsx,jsx,xml,yml,yaml,json,props,targets,csproj,slnx,code-workspace,html,liquid}]
+indent_size = 2
+tab_width = 2
+
+# Specify UTF-8 without byte-order mark
+[*.{csproj,locproj,nativeproj,proj,resx,slnx,vbproj}]
+charset = utf-8
+
+

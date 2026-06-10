@@ -1,0 +1,16 @@
+{
+  "file_scan_exclusions": [
+    "**/obj",
+    "**/bin",
+    // default values
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/.jj",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings",
+  ],
+}

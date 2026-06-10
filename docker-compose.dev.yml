@@ -1,0 +1,109 @@
+services:
+  db:
+    image: postgres:18
+    container_name: deal_vote-db
+    environment:
+      POSTGRES_USER: ${DB_ADMIN_USER}
+      POSTGRES_PASSWORD: ${DB_ADMIN_PASSWORD}
+      POSTGRES_DB: postgres
+      DEALVOTE_DB_PASSWORD: ${DEALVOTE_DB_PASSWORD}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - dv_postgres_data:/var/lib/postgresql
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_ADMIN_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - deal_vote-net
+
+  keycloak:
+    image: keycloak/keycloak:26.6.1
+    container_name: deal_vote-keycloak
+    command: start-dev --import-realm
+    environment:
+      # KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_CONSOLE_USER}
+      # KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_CONSOLE_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL_HOST: db
+      KC_DB_PORT: 5432
+      KC_DB_URL_DATABASE: ${KC_DB_URL}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KC_HEALTH_ENABLED: true
+      KC_HOSTNAME_STRICT: false
+      KC_HTTP_ENABLED: true
+    volumes:
+      - dv_keycloak_data:/opt/keycloak/data/
+      - ./keycloak-deploy/themes/keycloak-theme-for-kc-all-other-versions.jar:/opt/keycloak/providers/
+      - ./keycloak-deploy/import:/opt/keycloak/data/import
+    ports:
+      - 8080:8080
+      - 9000:9000
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    networks:
+      - deal_vote-net
+
+  seq:
+    image: datalust/seq:latest
+    container_name: deal_vote-seq
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: Y
+      SEQ_PASSWORD: ${SEQ_PASSWORD}
+    ports:
+      - 5341:5341
+      - 8081:80
+    volumes:
+      - dv_seqdata:/data
+    networks:
+      - deal_vote-net
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: deal_vote-mailpit
+    restart: unless-stopped
+    ports:
+      - 8025:8025
+      - 1025:1025
+    volumes:
+      - dv_mailpit_data:/data
+    networks:
+      - deal_vote-net
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: deal_vote-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - 5050:80
+    volumes:
+      - dv_pgadmin_data:/var/lib/pgadmin
+    networks:
+      - deal_vote-net
+
+volumes:
+  dv_postgres_data:
+    name: dv_postgres_data
+  dv_keycloak_data:
+    name: dv_keycloak_data
+  dv_pgadmin_data:
+    name: dv_pgadmin_data
+  dv_mailpit_data:
+    name: dv_mailpit_data
+  dv_seqdata:
+    name: dv_seq_data
+
+networks:
+  deal_vote-net:
+    driver: bridge
+    name: deal_vote-net

@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Debug Project",
+    "adapter": "netcoredbg",
+    "request": "launch",
+    "program": "${ZED_WORKTREE_ROOT}/src/backend/Host/DealVote.Api/obj/Debug/net10.0/DealVote.Api.dll",
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "build": {
+      "command": "dotnet",
+      "args": ["build", "-c", "Debug"],
+      "cwd": "${ZED_WORKTREE_ROOT}",
+    },
+  },
+]

@@ -1,0 +1,6 @@
+name: Dev env
+variables:
+  - name: host
+    value: http://localhost:5000/api/v1
+  - secret: true
+    name: client_secret
